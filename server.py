@@ -17,13 +17,14 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
+            # ✅ 보낸 사람 포함 모든 클라이언트에게 메시지 전송
             for client in clients:
-                if client != websocket:
-                    await client.send_text(data)
+                await client.send_text(data)
     except:
         clients.remove(websocket)
 
 @app.get("/")
 def get():
-    return HTMLResponse("WebSocket Server is running.")
+    return HTMLResponse("WebSocket server is running.")
+
 
